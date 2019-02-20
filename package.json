@@ -1,6 +1,6 @@
 {
-  "name": "@ckeditor/ckeditor5-link",
-  "version": "10.1.0",
+  "name": "@lexml/ckeditor5-urn",
+  "version": "0.0.0",
   "description": "Link feature for CKEditor 5.",
   "keywords": [
     "ckeditor",
@@ -35,10 +35,12 @@
   "author": "CKSource (http://cksource.com/)",
   "license": "GPL-2.0-or-later",
   "homepage": "https://ckeditor.com",
-  "bugs": "https://github.com/ckeditor/ckeditor5-link/issues",
+  "bugs": {
+    "url": "https://github.com/ckeditor/ckeditor5-link/issues"
+  },
   "repository": {
     "type": "git",
-    "url": "https://github.com/ckeditor/ckeditor5-link.git"
+    "url": "git+https://github.com/ckeditor/ckeditor5-link.git"
   },
   "files": [
     "lang",
@@ -57,5 +59,10 @@
   "eslintIgnore": [
     "src/lib/**",
     "packages/**"
-  ]
+  ],
+  "main": ".eslintrc.js",
+  "directories": {
+    "doc": "docs",
+    "test": "tests"
+  }
 }

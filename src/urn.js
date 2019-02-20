@@ -24,7 +24,7 @@ export default class URN extends Plugin {
 	 * @inheritDoc
 	 */
 	static get requires() {
-		return [ LinkEditing, LinkUI ];
+		return [ LinkEditing , LinkUI ];
 	}
 
 	/**

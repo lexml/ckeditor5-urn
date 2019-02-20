@@ -23,7 +23,7 @@ const HIGHLIGHT_CLASS = 'ck-link_selected';
  * The link engine feature.
  *
  * It introduces the `xlink:href="url"` attribute in the model which renders to the view as a `<a href="url">` element
- * as well as `'link'` and `'unlink'` commands.
+ * as well as `'urn'` and `'unlink'` commands.
  *
  * @extends module:core/plugin~Plugin
  */
@@ -50,17 +50,17 @@ export default class LinkEditing extends Plugin {
 				view: {
 					name: 'span',
 					attributes: {
-						href: true
+						'xlink:href': true
 					}
 				},
 				model: {
 					key: 'xlink:href',
-					value: viewElement => viewElement.getAttribute( 'href' )
+					value: viewElement => viewElement.getAttribute( 'xlink:href' )
 				}
 			} ) );
 
 		// Create linking commands.
-		editor.commands.add( 'link', new LinkCommand( editor ) );
+		editor.commands.add( 'urn', new LinkCommand( editor ) );
 		editor.commands.add( 'unlink', new UnlinkCommand( editor ) );
 
 		// Enable two-step caret movement for `xlink:href` attribute.

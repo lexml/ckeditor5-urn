@@ -23,7 +23,7 @@ import linkIcon from '../theme/icons/link.svg';
 const linkKeystroke = 'Ctrl+K';
 
 /**
- * The link UI plugin. It introduces the `'link'` and `'unlink'` buttons and support for the <kbd>Ctrl+K</kbd> keystroke.
+ * The link UI plugin. It introduces the `'urn'` and `'unlink'` buttons and support for the <kbd>Ctrl+K</kbd> keystroke.
  *
  * It uses the
  * {@link module:ui/panel/balloon/contextualballoon~ContextualBalloon contextual balloon plugin}.
@@ -84,7 +84,7 @@ export default class LinkUI extends Plugin {
 	_createActionsView() {
 		const editor = this.editor;
 		const actionsView = new LinkActionsView( editor.locale );
-		const linkCommand = editor.commands.get( 'link' );
+		const linkCommand = editor.commands.get( 'urn' );
 		const unlinkCommand = editor.commands.get( 'unlink' );
 
 		actionsView.bind( 'href' ).to( linkCommand, 'value' );
@@ -126,7 +126,7 @@ export default class LinkUI extends Plugin {
 	_createFormView() {
 		const editor = this.editor;
 		const formView = new LinkFormView( editor.locale );
-		const linkCommand = editor.commands.get( 'link' );
+		const linkCommand = editor.commands.get( 'urn' );
 
 		formView.urlInputView.bind( 'value' ).to( linkCommand, 'value' );
 
@@ -136,7 +136,7 @@ export default class LinkUI extends Plugin {
 
 		// Execute link command after clicking the "Save" button.
 		this.listenTo( formView, 'submit', () => {
-			editor.execute( 'link', formView.urlInputView.inputView.element.value );
+			editor.execute( 'urn', formView.urlInputView.inputView.element.value );
 			this._removeFormView();
 		} );
 
@@ -162,7 +162,7 @@ export default class LinkUI extends Plugin {
 	 */
 	_createToolbarLinkButton() {
 		const editor = this.editor;
-		const linkCommand = editor.commands.get( 'link' );
+		const linkCommand = editor.commands.get( 'urn' );
 		const t = editor.t;
 
 		// Handle the `Ctrl+K` keystroke and show the panel.
@@ -175,11 +175,11 @@ export default class LinkUI extends Plugin {
 			}
 		} );
 
-		editor.ui.componentFactory.add( 'link', locale => {
+		editor.ui.componentFactory.add( 'urn', locale => {
 			const button = new ButtonView( locale );
 
 			button.isEnabled = true;
-			button.label = t( 'Link' );
+			button.label = t( 'URN' );
 			button.icon = linkIcon;
 			button.keystroke = linkKeystroke;
 			button.tooltip = true;
@@ -271,7 +271,7 @@ export default class LinkUI extends Plugin {
 		}
 
 		const editor = this.editor;
-		const linkCommand = editor.commands.get( 'link' );
+		const linkCommand = editor.commands.get( 'urn' );
 
 		this._balloon.add( {
 			view: this.formView,
@@ -312,7 +312,7 @@ export default class LinkUI extends Plugin {
 	 */
 	_showUI() {
 		const editor = this.editor;
-		const linkCommand = editor.commands.get( 'link' );
+		const linkCommand = editor.commands.get( 'urn' );
 
 		if ( !linkCommand.isEnabled ) {
 			return;
