@@ -13,7 +13,7 @@ import ButtonView from '@ckeditor/ckeditor5-ui/src/button/buttonview';
 import LinkFormView from './ui/linkformview';
 import LinkActionsView from './ui/linkactionsview';
 
-import linkIcon from '../theme/icons/link.svg';
+import urnIcon from '../theme/icons/urn.svg';
 
 const linkKeystroke = 'Ctrl+K';
 
@@ -175,7 +175,7 @@ export default class URNLinkUI extends Plugin {
 
 			button.isEnabled = true;
 			button.label = t( 'URN' );
-			button.icon = linkIcon;
+			button.icon = urnIcon;
 			button.keystroke = linkKeystroke;
 			button.tooltip = true;
 
