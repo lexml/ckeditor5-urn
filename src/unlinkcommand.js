@@ -20,14 +20,14 @@ export default class UnlinkCommand extends Command {
 	 * @inheritDoc
 	 */
 	refresh() {
-		this.isEnabled = this.editor.model.document.selection.hasAttribute( 'linkHref' );
+		this.isEnabled = this.editor.model.document.selection.hasAttribute( 'xlink:href' );
 	}
 
 	/**
 	 * Executes the command.
 	 *
-	 * When the selection is collapsed, removes the `linkHref` attribute from each node with the same `linkHref` attribute value.
-	 * When the selection is non-collapsed, removes the `linkHref` attribute from each node in selected ranges.
+	 * When the selection is collapsed, removes the `xlink:href` attribute from each node with the same `xlink:href` attribute value.
+	 * When the selection is non-collapsed, removes the `xlink:href` attribute from each node in selected ranges.
 	 *
 	 * @fires execute
 	 */
@@ -38,11 +38,11 @@ export default class UnlinkCommand extends Command {
 		model.change( writer => {
 			// Get ranges to unlink.
 			const rangesToUnlink = selection.isCollapsed ?
-				[ findLinkRange( selection.getFirstPosition(), selection.getAttribute( 'linkHref' ), model ) ] : selection.getRanges();
+				[ findLinkRange( selection.getFirstPosition(), selection.getAttribute( 'xlink:href' ), model ) ] : selection.getRanges();
 
-			// Remove `linkHref` attribute from specified ranges.
+			// Remove `xlink:href` attribute from specified ranges.
 			for ( const range of rangesToUnlink ) {
-				writer.removeAttribute( 'linkHref', range );
+				writer.removeAttribute( 'xlink:href', range );
 			}
 		} );
 	}

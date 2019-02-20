@@ -22,7 +22,7 @@ const HIGHLIGHT_CLASS = 'ck-link_selected';
 /**
  * The link engine feature.
  *
- * It introduces the `linkHref="url"` attribute in the model which renders to the view as a `<a href="url">` element
+ * It introduces the `xlink:href="url"` attribute in the model which renders to the view as a `<a href="url">` element
  * as well as `'link'` and `'unlink'` commands.
  *
  * @extends module:core/plugin~Plugin
@@ -35,26 +35,26 @@ export default class LinkEditing extends Plugin {
 		const editor = this.editor;
 
 		// Allow link attribute on all inline nodes.
-		editor.model.schema.extend( '$text', { allowAttributes: 'linkHref' } );
+		editor.model.schema.extend( '$text', { allowAttributes: 'xlink:href' } );
 
 		editor.conversion.for( 'dataDowncast' )
-			.add( downcastAttributeToElement( { model: 'linkHref', view: createLinkElement } ) );
+			.add( downcastAttributeToElement( { model: 'xlink:href', view: createLinkElement } ) );
 
 		editor.conversion.for( 'editingDowncast' )
-			.add( downcastAttributeToElement( { model: 'linkHref', view: ( href, writer ) => {
+			.add( downcastAttributeToElement( { model: 'xlink:href', view: ( href, writer ) => {
 				return createLinkElement( ensureSafeUrl( href ), writer );
 			} } ) );
 
 		editor.conversion.for( 'upcast' )
 			.add( upcastElementToAttribute( {
 				view: {
-					name: 'a',
+					name: 'span',
 					attributes: {
 						href: true
 					}
 				},
 				model: {
-					key: 'linkHref',
+					key: 'xlink:href',
 					value: viewElement => viewElement.getAttribute( 'href' )
 				}
 			} ) );
@@ -63,8 +63,8 @@ export default class LinkEditing extends Plugin {
 		editor.commands.add( 'link', new LinkCommand( editor ) );
 		editor.commands.add( 'unlink', new UnlinkCommand( editor ) );
 
-		// Enable two-step caret movement for `linkHref` attribute.
-		bindTwoStepCaretToAttribute( editor.editing.view, editor.model, this, 'linkHref' );
+		// Enable two-step caret movement for `xlink:href` attribute.
+		bindTwoStepCaretToAttribute( editor.editing.view, editor.model, this, 'xlink:href' );
 
 		// Setup highlight over selected link.
 		this._setupLinkHighlight();
@@ -93,14 +93,14 @@ export default class LinkEditing extends Plugin {
 		view.document.registerPostFixer( writer => {
 			const selection = editor.model.document.selection;
 
-			if ( selection.hasAttribute( 'linkHref' ) ) {
-				const modelRange = findLinkRange( selection.getFirstPosition(), selection.getAttribute( 'linkHref' ), editor.model );
+			if ( selection.hasAttribute( 'xlink:href' ) ) {
+				const modelRange = findLinkRange( selection.getFirstPosition(), selection.getAttribute( 'xlink:href' ), editor.model );
 				const viewRange = editor.editing.mapper.toViewRange( modelRange );
 
 				// There might be multiple `a` elements in the `viewRange`, for example, when the `a` element is
 				// broken by a UIElement.
 				for ( const item of viewRange.getItems() ) {
-					if ( item.is( 'a' ) ) {
+					if ( item.is( 'span' ) ) {
 						writer.addClass( HIGHLIGHT_CLASS, item );
 						highlightedLinks.add( item );
 					}
