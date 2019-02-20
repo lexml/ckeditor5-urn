@@ -1,9 +1,4 @@
 /**
- * @license Copyright (c) 2003-2018, CKSource - Frederico Knabben. All rights reserved.
- * For licensing, see LICENSE.md.
- */
-
-/**
  * @module link/linkediting
  */
 
@@ -20,21 +15,21 @@ import '../theme/link.css';
 const HIGHLIGHT_CLASS = 'ck-link_selected';
 
 /**
- * The link engine feature.
+ * The urnLink engine feature.
  *
- * It introduces the `xlink:href="url"` attribute in the model which renders to the view as a `<a href="url">` element
+ * It introduces the `xlink:href="urn"` attribute in the model which renders to the view as a `<span xlink:href="urn!fragment">` element
  * as well as `'urn'` and `'unlink'` commands.
  *
  * @extends module:core/plugin~Plugin
  */
-export default class LinkEditing extends Plugin {
+export default class URNLinkEditing extends Plugin {
 	/**
 	 * @inheritDoc
 	 */
 	init() {
 		const editor = this.editor;
 
-		// Allow link attribute on all inline nodes.
+		// Allow urn attribute on all inline nodes.
 		editor.model.schema.extend( '$text', { allowAttributes: 'xlink:href' } );
 
 		editor.conversion.for( 'dataDowncast' )
@@ -93,11 +88,13 @@ export default class LinkEditing extends Plugin {
 		view.document.registerPostFixer( writer => {
 			const selection = editor.model.document.selection;
 
+			console.log('selection:', selection);
+
 			if ( selection.hasAttribute( 'xlink:href' ) ) {
 				const modelRange = findLinkRange( selection.getFirstPosition(), selection.getAttribute( 'xlink:href' ), editor.model );
 				const viewRange = editor.editing.mapper.toViewRange( modelRange );
 
-				// There might be multiple `a` elements in the `viewRange`, for example, when the `a` element is
+				// There might be multiple `span` elements in the `viewRange`, for example, when the `span` element is
 				// broken by a UIElement.
 				for ( const item of viewRange.getItems() ) {
 					if ( item.is( 'span' ) ) {

@@ -1,9 +1,4 @@
 /**
- * @license Copyright (c) 2003-2018, CKSource - Frederico Knabben. All rights reserved.
- * For licensing, see LICENSE.md.
- */
-
-/**
  * @module link/linkui
  */
 
@@ -30,7 +25,7 @@ const linkKeystroke = 'Ctrl+K';
  *
  * @extends module:core/plugin~Plugin
  */
-export default class LinkUI extends Plugin {
+export default class URNLinkUI extends Plugin {
 	/**
 	 * @inheritDoc
 	 */

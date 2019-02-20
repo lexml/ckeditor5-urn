@@ -1,9 +1,4 @@
 /**
- * @license Copyright (c) 2003-2018, CKSource - Frederico Knabben. All rights reserved.
- * For licensing, see LICENSE.md.
- */
-
-/**
  * @module link/utils
  */
 
@@ -23,14 +18,14 @@ export function isLinkElement( node ) {
 }
 
 /**
- * Creates link {@link module:engine/view/attributeelement~AttributeElement} with provided `href` attribute.
+ * Creates link {@link module:engine/view/attributeelement~AttributeElement} with provided `xlink:href` attribute.
  *
  * @param {String} href
  * @returns {module:engine/view/attributeelement~AttributeElement}
  */
 export function createLinkElement( href, writer ) {
 	// Priority 5 - https://github.com/ckeditor/ckeditor5-link/issues/121.
-	const linkElement = writer.createAttributeElement( 'a', { href }, { priority: 5 } );
+	const linkElement = writer.createAttributeElement( 'span', { 'xlink:href': href, class: 'lexml-url'}, { priority: 5 } );
 	writer.setCustomProperty( linkElementSymbol, true, linkElement );
 
 	return linkElement;
@@ -48,6 +43,7 @@ export function createLinkElement( href, writer ) {
  * @returns {String} Safe URL.
  */
 export function ensureSafeUrl( url ) {
+	
 	url = String( url );
 
 	return isSafeUrl( url ) ? url : '#';
