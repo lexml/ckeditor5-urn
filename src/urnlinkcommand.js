@@ -16,7 +16,7 @@ import toMap from '@ckeditor/ckeditor5-utils/src/tomap';
  *
  * @extends module:core/command~Command
  */
-export default class LinkCommand extends Command {
+export default class URNLinkCommand extends Command {
 	/**
 	 * The value of the `'xlink:href'` attribute if the start of the selection is located in a node with this attribute.
 	 *
@@ -50,9 +50,9 @@ export default class LinkCommand extends Command {
 	 * When the selection is collapsed and inside the text with the `xlink:href` attribute, the attribute value will be updated.
 	 *
 	 * @fires execute
-	 * @param {String} href Link destination.
+	 * @param {String} urn Link destination.
 	 */
-	execute( href ) {
+	execute( urn ) {
 		const model = this.editor.model;
 		const selection = model.document.selection;
 
@@ -60,13 +60,14 @@ export default class LinkCommand extends Command {
 			// If selection is collapsed then update selected link or insert new one at the place of caret.
 			if ( selection.isCollapsed ) {
 				const position = selection.getFirstPosition();
+				console.log('selection collapsed', position);
 
 				// When selection is inside text with `xlink:href` attribute.
 				if ( selection.hasAttribute( 'xlink:href' ) ) {
 					// Then update `xlink:href` value.
 					const linkRange = findLinkRange( selection.getFirstPosition(), selection.getAttribute( 'xlink:href' ), model );
 
-					writer.setAttribute( 'xlink:href', href, linkRange );
+					writer.setAttribute( 'xlink:href', urn, linkRange );
 
 					// Create new range wrapping changed link.
 					writer.setSelection( linkRange );
@@ -74,12 +75,12 @@ export default class LinkCommand extends Command {
 				// If not then insert text node with `xlink:href` attribute in place of caret.
 				// However, since selection in collapsed, attribute value will be used as data for text node.
 				// So, if `href` is empty, do not create text node.
-				else if ( href !== '' ) {
+				else if ( urn !== '' ) {
 					const attributes = toMap( selection.getAttributes() );
 
-					attributes.set( 'xlink:href', href );
+					attributes.set( 'xlink:href', urn );
 
-					const node = writer.createText( href, attributes );
+					const node = writer.createText( urn, attributes );
 
 					writer.insert( node, position );
 
@@ -91,8 +92,10 @@ export default class LinkCommand extends Command {
 				// omitting nodes where `xlink:href` attribute is disallowed.
 				const ranges = model.schema.getValidRanges( selection.getRanges(), 'xlink:href' );
 
+				console.log('selection is non-collapsed', ranges);
+
 				for ( const range of ranges ) {
-					writer.setAttribute( 'xlink:href', href, range );
+					writer.setAttribute( 'xlink:href', urn, range );
 				}
 			}
 		} );

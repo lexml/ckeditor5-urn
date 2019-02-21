@@ -15,7 +15,7 @@ import findLinkRange from './findlinkrange';
  *
  * @extends module:core/command~Command
  */
-export default class UnlinkCommand extends Command {
+export default class URN_UnlinkCommand extends Command {
 	/**
 	 * @inheritDoc
 	 */

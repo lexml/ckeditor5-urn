@@ -4,10 +4,10 @@
 
 import Plugin from '@ckeditor/ckeditor5-core/src/plugin';
 import { downcastAttributeToElement } from '@ckeditor/ckeditor5-engine/src/conversion/downcast-converters';
-import { upcastElementToAttribute } from '@ckeditor/ckeditor5-engine/src/conversion/upcast-converters';
-import LinkCommand from './linkcommand';
-import UnlinkCommand from './unlinkcommand';
-import { createLinkElement, ensureSafeUrl } from './utils';
+import { upcastElementToAttribute, upcastAttributeToAttribute } from '@ckeditor/ckeditor5-engine/src/conversion/upcast-converters';
+import URNLinkCommand from './urnlinkcommand';
+import URN_UnlinkCommand from './urn-unlinkcommand';
+import { createLinkElement, ensureSafeUrn } from './utils';
 import bindTwoStepCaretToAttribute from '@ckeditor/ckeditor5-engine/src/utils/bindtwostepcarettoattribute';
 import findLinkRange from './findlinkrange';
 import '../theme/link.css';
@@ -27,26 +27,30 @@ export default class URNLinkEditing extends Plugin {
 	 * @inheritDoc
 	 */
 	init() {
+		
 		const editor = this.editor;
 
-		// Allow urn attribute on all inline nodes.
+		// Allow xlink:href attribute on all inline nodes.
 		editor.model.schema.extend( '$text', { allowAttributes: 'xlink:href' } );
 
 		editor.conversion.for( 'dataDowncast' )
 			.add( downcastAttributeToElement( { model: 'xlink:href', view: createLinkElement } ) );
 
 		editor.conversion.for( 'editingDowncast' )
-			.add( downcastAttributeToElement( { model: 'xlink:href', view: ( href, writer ) => {
-				return createLinkElement( ensureSafeUrl( href ), writer );
+			.add( downcastAttributeToElement( { model: 'xlink:href', view: ( urn, writer ) => {
+				return createLinkElement( ensureSafeUrn( urn ), writer );
 			} } ) );
 
 		editor.conversion.for( 'upcast' )
-			.add( upcastElementToAttribute( {
+			// TODO: conversor original sobrescrito
+			// .add( upcastElementToAttribute( {
+			.add( upcastAttributeToAttribute( {
 				view: {
-					name: 'span',
-					attributes: {
-						'xlink:href': true
-					}
+					key: 'xlink:href' 
+					// name: 'span',
+					// attributes: {
+					// 	'xlink:href': true
+					// }
 				},
 				model: {
 					key: 'xlink:href',
@@ -55,8 +59,8 @@ export default class URNLinkEditing extends Plugin {
 			} ) );
 
 		// Create linking commands.
-		editor.commands.add( 'urn', new LinkCommand( editor ) );
-		editor.commands.add( 'unlink', new UnlinkCommand( editor ) );
+		editor.commands.add( 'urn', new URNLinkCommand( editor ) );
+		editor.commands.add( 'unlink', new URN_UnlinkCommand( editor ) );
 
 		// Enable two-step caret movement for `xlink:href` attribute.
 		bindTwoStepCaretToAttribute( editor.editing.view, editor.model, this, 'xlink:href' );

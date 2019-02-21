@@ -5,7 +5,7 @@
 const linkElementSymbol = Symbol( 'linkElement' );
 
 const ATTRIBUTE_WHITESPACES = /[\u0000-\u0020\u00A0\u1680\u180E\u2000-\u2029\u205f\u3000]/g; // eslint-disable-line no-control-regex
-const SAFE_URL = /^(?:(?:https?|ftps?|mailto):|[^a-z]|[a-z+.-]+(?:[^a-z+.:-]|$))/i;
+const SAFE_URL = /^(?:(?:urn:lex:br):|[^a-z]|[a-z+.-]+(?:[^a-z+.:-]|$))/i;
 
 /**
  * Returns `true` if a given view node is the link element.
@@ -20,12 +20,12 @@ export function isLinkElement( node ) {
 /**
  * Creates link {@link module:engine/view/attributeelement~AttributeElement} with provided `xlink:href` attribute.
  *
- * @param {String} href
+ * @param {String} urn
  * @returns {module:engine/view/attributeelement~AttributeElement}
  */
-export function createLinkElement( href, writer ) {
+export function createLinkElement( urn, writer ) {
 	// Priority 5 - https://github.com/ckeditor/ckeditor5-link/issues/121.
-	const linkElement = writer.createAttributeElement( 'span', { 'xlink:href': href, class: 'lexml-url'}, { priority: 5 } );
+	const linkElement = writer.createAttributeElement( 'span', { 'xlink:href': urn, class: 'lexml-url'}, { priority: 5 } );
 	writer.setCustomProperty( linkElementSymbol, true, linkElement );
 
 	return linkElement;
@@ -39,14 +39,14 @@ export function createLinkElement( href, writer ) {
  * If URL is considered unsafe, a simple `"#"` is returned.
  *
  * @protected
- * @param {*} url
- * @returns {String} Safe URL.
+ * @param {*} urn
+ * @returns {String} Safe URN.
  */
-export function ensureSafeUrl( url ) {
+export function ensureSafeUrn( urn ) {
 	
-	url = String( url );
+	urn = String( urn );
 
-	return isSafeUrl( url ) ? url : '#';
+	return isSafeUrl( urn ) ? urn : '#';
 }
 
 // Checks whether the given URL is safe for the user (does not contain any malicious code).

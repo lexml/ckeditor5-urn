@@ -5,5 +5,6 @@
  */
 
 .lexml-url {
-    color: blue
+    color: blue;
+    cursor: pointer;
 }

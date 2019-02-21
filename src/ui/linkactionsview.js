@@ -16,7 +16,7 @@ import FocusTracker from '@ckeditor/ckeditor5-utils/src/focustracker';
 import FocusCycler from '@ckeditor/ckeditor5-ui/src/focuscycler';
 import KeystrokeHandler from '@ckeditor/ckeditor5-utils/src/keystrokehandler';
 
-import { ensureSafeUrl } from '../utils';
+import { ensureSafeUrl, ensureSafeUrn } from '../utils';
 
 import unlinkIcon from '../../theme/icons/unlink.svg';
 import pencilIcon from '@ckeditor/ckeditor5-core/theme/icons/pencil.svg';
@@ -208,7 +208,7 @@ export default class LinkActionsView extends View {
 					'ck',
 					'ck-link-actions__preview'
 				],
-				href: bind.to( 'href', href => href && ensureSafeUrl( href ) ),
+				href: bind.to( 'href', href => href && ensureSafeUrn( href ) ),
 				target: '_blank'
 			}
 		} );
